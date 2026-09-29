@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurora Garden Control | Mockups</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Franklin:wght@400;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; font-family: "DM Sans", sans-serif; background: #edf0ee; color: #18262b; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    button, select, input { font: inherit; }
+    button { cursor: pointer; }
+    .switcher { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px clamp(16px, 4vw, 48px); background: rgba(237,240,238,.94); border-bottom: 1px solid #cbd3d0; backdrop-filter: blur(18px); overflow: hidden; }
+    .switcher strong { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+    .tabs { display: flex; flex: 1 1 auto; min-width: 0; max-width: 100%; gap: 6px; overflow-x: auto; }
+    .tabs button { border: 1px solid #b8c3bf; border-radius: 4px; padding: 8px 12px; background: transparent; color: #52645f; white-space: nowrap; }
+    .tabs button.active { background: #18262b; color: #f5f6ef; border-color: #18262b; }
+    .mockup { display: none; min-height: calc(100vh - 62px); padding: clamp(24px, 4vw, 54px); overflow-x: hidden; }
+    .mockup.active { display: block; animation: enter .45s ease both; }
+    @keyframes enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .mockup.active { animation: none; } }
+    .frame { max-width: 1460px; margin: auto; }
+    .eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
+    .muted { color: #71817c; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; }
+    .control { border: 1px solid currentColor; border-radius: 4px; padding: 9px 11px; background: transparent; font-size: 12px; }
+    .control.filled { color: inherit; background: rgba(255,255,255,.13); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; }
+    .kpi { min-width: 0; padding: 18px 16px; border-right: 1px solid currentColor; }
+    .kpi:last-child { border-right: 0; }
+    .kpi small { display: block; font-size: 11px; opacity: .72; }
+    .kpi strong { display: block; margin: 9px 0 4px; font-size: clamp(22px, 2.7vw, 34px); font-weight: 600; letter-spacing: -.04em; }
+    .panel { border: 1px solid currentColor; padding: 20px; }
+    .panel h2 { margin: 0; font-size: 19px; font-weight: 600; }
+    .panel-head { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-bottom: 18px; }
+    .panel-head p { margin: 0; font-size: 12px; }
+    .layout-2 { display: grid; grid-template-columns: 1.35fr .85fr; gap: 16px; }
+    .layout-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .bars { height: 220px; display: flex; align-items: end; gap: 9px; border-bottom: 1px solid currentColor; padding: 16px 4px 0; }
+    .bar-col { flex: 1; min-width: 24px; height: 100%; display: flex; flex-direction: column; justify-content: end; gap: 6px; align-items: center; }
+    .bar-col span { font-size: 10px; opacity: .72; }
+    .bar { width: 100%; min-height: 4px; background: #2e6478; }
+    .bar:nth-child(odd) { background: #d9af4d; }
+    .rank-row, .metric-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 12px 0; border-bottom: 1px solid currentColor; }
+    .rank-row:last-child, .metric-row:last-child { border-bottom: 0; }
+    .rank-row small, .metric-row small { display: block; margin-top: 4px; font-size: 11px; opacity: .72; }
+    .meter { grid-column: 1 / -1; height: 4px; background: rgba(24,38,43,.12); }
+    .meter i { display: block; height: 100%; background: #2e6478; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 650px; font-size: 12px; }
+    th, td { padding: 13px 10px; text-align: left; border-bottom: 1px solid currentColor; }
+    th { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+    .status { display: inline-flex; align-items: center; gap: 6px; }
+    .status i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .status.good { color: #4c806b; }
+    .status.warn { color: #d4644d; }
+
+    /* Faixa de Mercado */
+    #market { background: #17212b; color: #e9eef1; font-family: "Libre Franklin", sans-serif; }
+    #market .topline { display: flex; justify-content: space-between; gap: 24px; align-items: end; border-bottom: 1px solid #51616b; padding-bottom: 20px; }
+    #market h1 { max-width: 700px; margin: 8px 0 4px; font-family: Newsreader, serif; font-size: clamp(42px, 7vw, 86px); font-weight: 400; line-height: .92; letter-spacing: -.055em; }
+    #market .eyebrow { color: #d9af4d; }
+    #market .controls { justify-content: flex-end; }
+    #market .control { color: #e9eef1; border-color: #60717a; }
+    #market .kpis { margin: 24px 0 16px; border-top: 1px solid #51616b; border-bottom: 1px solid #51616b; }
+    #market .kpi { border-color: #51616b; }
+    #market .layout-2, #market .layout-3 { margin-bottom: 16px; }
+    #market .panel { border-color: #51616b; background: #202e38; }
+    #market .bar { background: #2e9b72; }
+    #market .bar:nth-child(odd) { background: #d59b28; }
+    #market .meter { background: #354650; }
+    #market .meter i { background: #2e9b72; }
+    #market .status.warn { color: #d59b28; }
+    #market .status.good { color: #52b58b; }
+    #market .insight { border-left: 4px solid #d59b28; background: #2a3841; padding: 18px; font-family: Newsreader, serif; font-size: 24px; line-height: 1.15; }
+    #market .insight small { display: block; margin-top: 12px; font-family: "Libre Franklin", sans-serif; font-size: 11px; color: #9daeb7; }
+
+    /* Sala de Controle */
+    #control-room { background: #e8eeec; color: #18262b; font-family: "DM Sans", sans-serif; }
+    #control-room .topline { display: flex; justify-content: space-between; gap: 24px; align-items: end; border-bottom: 2px solid #18262b; padding-bottom: 18px; }
+    #control-room h1 { margin: 7px 0 4px; font-family: "Space Grotesk", sans-serif; font-size: clamp(30px, 5vw, 64px); line-height: .95; letter-spacing: -.07em; }
+    #control-room .eyebrow { color: #2e6478; }
+    #control-room .controls { justify-content: flex-end; }
+    #control-room .control { border-color: #8ca09b; }
+    #control-room .kpis { margin: 20px 0 16px; background: #f7faf8; border: 1px solid #8ca09b; }
+    #control-room .kpi { border-color: #8ca09b; }
+    #control-room .kpi strong { font-family: "DM Mono", monospace; font-size: clamp(20px, 2.3vw, 29px); }
+    #control-room .kpi:nth-child(5) strong { color: #d4644d; }
+    #control-room .panel { background: #f7faf8; border-color: #8ca09b; }
+    #control-room .panel h2 { font-family: "Space Grotesk", sans-serif; }
+    #control-room .bars { height: 230px; }
+    #control-room .bar { background: #2e6478; }
+    #control-room .bar:nth-child(odd) { background: #4c806b; }
+    #control-room .exception { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 13px 0; border-bottom: 1px solid #c1cfca; }
+    #control-room .exception:last-child { border-bottom: 0; }
+    #control-room .signal { width: 10px; height: 10px; background: #d4644d; }
+    #control-room .signal.yellow { background: #d9af4d; }
+    #control-room .signal.green { background: #4c806b; }
+    #control-room .exception b { font-size: 13px; }
+    #control-room .exception small { display: block; color: #71817c; margin-top: 3px; }
+    #control-room .exception strong { font-family: "DM Mono", monospace; font-size: 12px; }
+
+    /* Carta de Correntes */
+    #atlas { background: #f2ebdd; color: #102e2b; font-family: "DM Sans", sans-serif; background-image: linear-gradient(rgba(16,46,43,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(16,46,43,.04) 1px, transparent 1px); background-size: 28px 28px; }
+    #atlas .topline { display: flex; justify-content: space-between; gap: 24px; align-items: end; padding-bottom: 22px; border-bottom: 1px solid #6f8980; }
+    #atlas h1 { max-width: 740px; margin: 9px 0 5px; font-family: Newsreader, serif; font-size: clamp(45px, 7vw, 94px); font-weight: 500; letter-spacing: -.07em; line-height: .86; }
+    #atlas .eyebrow { color: #d4644d; }
+    #atlas .controls { justify-content: flex-end; }
+    #atlas .control { border-color: #6f8980; }
+    #atlas .layout-atlas { display: grid; grid-template-columns: 180px minmax(0, 1fr) 240px; gap: 16px; margin-top: 24px; }
+    #atlas .side-note, #atlas .selection { border-top: 2px solid #102e2b; padding-top: 14px; }
+    #atlas .side-note h2, #atlas .selection h2 { margin: 0 0 18px; font-family: Newsreader, serif; font-size: 25px; font-weight: 500; }
+    #atlas .side-note strong { display: block; font-size: 29px; letter-spacing: -.06em; }
+    #atlas .side-note p { font-size: 12px; line-height: 1.5; }
+    #atlas .atlas-map { min-height: 390px; border: 1px solid #6f8980; background: rgba(217,231,216,.65); padding: 18px; position: relative; overflow: hidden; }
+    #atlas .map-title { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 18px; }
+    #atlas .map-grid { display: grid; grid-template-columns: 1.1fr repeat(4, 1fr); gap: 5px; }
+    #atlas .map-cell { min-height: 61px; display: flex; align-items: end; justify-content: space-between; padding: 8px; background: #d9e7d8; border: 1px solid rgba(16,46,43,.18); font-size: 11px; }
+    #atlas .map-cell.head { min-height: 28px; align-items: center; background: transparent; border: 0; color: #58736a; font-size: 10px; }
+    #atlas .map-cell.hot { background: #2f9186; color: #f2ebdd; }
+    #atlas .map-cell.warm { background: #d5a642; }
+    #atlas .map-cell.risk { background: #d4644d; color: #fff5ed; }
+    #atlas .route { position: absolute; height: 2px; background: #d4644d; transform: rotate(-12deg); opacity: .7; }
+    #atlas .route.one { width: 170px; left: 32%; top: 46%; }
+    #atlas .route.two { width: 130px; left: 50%; top: 64%; transform: rotate(18deg); background: #2f9186; }
+    #atlas .selection { background: rgba(242,235,221,.7); }
+    #atlas .selection dl { margin: 0; }
+    #atlas .selection dt { margin-top: 14px; font-size: 11px; color: #58736a; }
+    #atlas .selection dd { margin: 2px 0 0; font-size: 22px; font-weight: 600; letter-spacing: -.05em; }
+    #atlas .selection .next { margin-top: 24px; padding: 12px; border-left: 3px solid #d4644d; font-size: 12px; line-height: 1.4; }
+    #atlas .wide { margin-top: 16px; }
+    #atlas .bar { background: #2f9186; }
+    #atlas .bar:nth-child(odd) { background: #d5a642; }
+    #atlas .meter { background: rgba(16,46,43,.12); }
+    #atlas .meter i { background: #2f9186; }
+
+    @media (max-width: 920px) {
+      .switcher { align-items: flex-start; flex-direction: column; }
+      .tabs { width: 100%; }
+      .topline { flex-direction: column; align-items: flex-start !important; }
+      .controls { justify-content: flex-start !important; }
+      .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+      .kpi:nth-child(3) { border-right: 0; }
+      .kpi:nth-child(-n+3) { border-bottom: 1px solid currentColor; }
+      .layout-2, .layout-3 { grid-template-columns: 1fr; }
+      #atlas .layout-atlas { grid-template-columns: 1fr; }
+      #atlas .side-note { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      #atlas .side-note h2 { grid-column: 1 / -1; margin-bottom: -4px; }
+    }
+    @media (max-width: 560px) {
+      .mockup { padding: 22px 14px 40px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi:nth-child(3) { border-right: 1px solid currentColor; }
+      .kpi:nth-child(even) { border-right: 0; }
+      .kpi:nth-child(-n+4) { border-bottom: 1px solid currentColor; }
+      .panel { padding: 15px; }
+      #atlas .side-note { display: block; }
+      #atlas .side-note > * { margin-bottom: 15px; }
+      #atlas h1, #market h1 { font-size: 48px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="switcher" aria-label="Escolher mockup">
+    <strong>Aurora / três direções</strong>
+    <div class="tabs" role="tablist">
+      <button class="active" data-target="market" role="tab" aria-selected="true">01 · Faixa de Mercado</button>
+      <button data-target="control-room" role="tab" aria-selected="false">02 · Sala de Controle</button>
+      <button data-target="atlas" role="tab" aria-selected="false">03 · Carta de Correntes</button>
+    </div>
+  </nav>
+
+  <main>
+    <section id="market" class="mockup active" role="tabpanel">
+      <div class="frame">
+        <header class="topline">
+          <div><div class="eyebrow">Commerce intelligence / 11 setembro 2026</div><h1>Aurora Garden<br>Control</h1><p class="muted">A leitura executiva do negócio em uma única faixa.</p></div>
+          <div class="controls"><select class="control"><option>2026</option></select><select class="control"><option>Todos os países</option></select><select class="control"><option>Todas as categorias</option></select><button class="control">Limpar filtros</button></div>
+        </header>
+        <section class="kpi-grid kpis"><div class="kpi"><small>Receita</small><strong>$1.24M</strong><small>+12,8% no período</small></div><div class="kpi"><small>Pedidos</small><strong>25.0K</strong><small>+4,2% no período</small></div><div class="kpi"><small>Ticket médio</small><strong>$84</strong><small>estável</small></div><div class="kpi"><small>Clientes</small><strong>7.9K</strong><small>+18,4% no período</small></div><div class="kpi"><small>Devoluções</small><strong>8.4%</strong><small class="status warn"><i></i> atenção</small></div><div class="kpi"><small>Entrega média</small><strong>3.7d</strong><small class="status good"><i></i> saudável</small></div></section>
+        <div class="layout-2"><article class="panel"><div class="panel-head"><div><h2>Receita mensal</h2><p class="muted">Tendência e concentração do período</p></div><span class="eyebrow">USD</span></div><div class="bars"><div class="bar-col"><span>$74k</span><div class="bar" style="height:36%"></div><span>Jan</span></div><div class="bar-col"><span>$82k</span><div class="bar" style="height:49%"></div><span>Mar</span></div><div class="bar-col"><span>$96k</span><div class="bar" style="height:62%"></div><span>Mai</span></div><div class="bar-col"><span>$113k</span><div class="bar" style="height:78%"></div><span>Jul</span></div><div class="bar-col"><span>$128k</span><div class="bar" style="height:94%"></div><span>Set</span></div><div class="bar-col"><span>$119k</span><div class="bar" style="height:84%"></div><span>Nov</span></div></div></article><article class="panel"><div class="panel-head"><div><h2>Concentração</h2><p class="muted">Onde a receita se forma</p></div></div><div class="rank-row"><div><b>Home & Kitchen</b><small>34% da receita</small></div><strong>$421K</strong></div><div class="rank-row"><div><b>Estados Unidos</b><small>29% da receita</small></div><strong>$359K</strong></div><div class="rank-row"><div><b>Premium tier</b><small>24% da receita</small></div><strong>$298K</strong></div><div class="rank-row"><div><b>Air Fryer Digital</b><small>produto líder</small></div><strong>$42K</strong></div></article></div>
+        <div class="layout-2" style="margin-top:16px"><article class="insight"><b>Receita acelerou no fim do período.</b><small>Home & Kitchen lidera, mas combina maior devolução com maior prazo médio de entrega.</small></article><article class="panel"><div class="panel-head"><div><h2>Produtos em observação</h2><p class="muted">Receita versus risco operacional</p></div></div><div class="metric-row"><span>Air Fryer Digital</span><b>$42.8K</b><div class="meter"><i style="width:86%"></i></div></div><div class="metric-row"><span>Desk Organizer</span><b>$29.1K</b><div class="meter"><i style="width:59%"></i></div></div><div class="metric-row"><span>Premium Coffee Beans</span><b>$38.4K</b><div class="meter"><i style="width:76%"></i></div></div></article></div>
+        <article class="panel" style="margin-top:16px"><div class="panel-head"><div><h2>Pedidos filtrados</h2><p class="muted">1.248 resultados no recorte atual</p></div><button class="control">Buscar pedido</button></div><div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th></tr></thead><tbody><tr><td>#10482</td><td>cus_00821</td><td>Air Fryer Digital</td><td>$129</td><td class="status good"><i></i> Entregue</td></tr><tr><td>#10481</td><td>cus_00416</td><td>Desk Organizer</td><td>$74</td><td class="status warn"><i></i> Em trânsito</td></tr><tr><td>#10480</td><td>cus_00192</td><td>Premium Coffee Beans</td><td>$58</td><td class="status good"><i></i> Entregue</td></tr></tbody></table></div></article>
+      </div>
+    </section>
+
+    <section id="control-room" class="mockup" role="tabpanel">
+      <div class="frame">
+        <header class="topline"><div><div class="eyebrow">Aurora / operações comerciais</div><h1>Sala de controle</h1><p class="muted">Encontrar o desvio. Decidir o próximo movimento.</p></div><div class="controls"><button class="control">Tempo: 2026</button><button class="control">Mercado: todos</button><button class="control">6 filtros ativos</button></div></header>
+        <section class="kpi-grid kpis"><div class="kpi"><small>Receita</small><strong>$1.24M</strong><small>+12.8%</small></div><div class="kpi"><small>Pedidos</small><strong>25,000</strong><small>+4.2%</small></div><div class="kpi"><small>Ticket</small><strong>$84.20</strong><small>estável</small></div><div class="kpi"><small>Clientes</small><strong>7,900</strong><small>+18.4%</small></div><div class="kpi"><small>Devoluções</small><strong>8.4%</strong><small>+1.1 pp</small></div><div class="kpi"><small>Entrega</small><strong>3.7 d</strong><small>-0.4 d</small></div></section>
+        <div class="layout-2"><article class="panel"><div class="panel-head"><div><h2>Receita mensal</h2><p class="muted">Comparação com o período anterior</p></div><button class="control">Abrir detalhe</button></div><div class="bars"><div class="bar-col"><span>$74k</span><div class="bar" style="height:36%"></div><span>Jan</span></div><div class="bar-col"><span>$82k</span><div class="bar" style="height:49%"></div><span>Mar</span></div><div class="bar-col"><span>$96k</span><div class="bar" style="height:62%"></div><span>Mai</span></div><div class="bar-col"><span>$113k</span><div class="bar" style="height:78%"></div><span>Jul</span></div><div class="bar-col"><span>$128k</span><div class="bar" style="height:94%"></div><span>Set</span></div><div class="bar-col"><span>$119k</span><div class="bar" style="height:84%"></div><span>Nov</span></div></div></article><article class="panel"><div class="panel-head"><div><h2>Fila de exceções</h2><p class="muted">O que exige investigação agora</p></div><span class="eyebrow">06 sinais</span></div><div class="exception"><i class="signal"></i><div><b>Retorno alto</b><small>3 produtos acima de 10%</small></div><strong>+2.4 pp</strong></div><div class="exception"><i class="signal yellow"></i><div><b>Entrega lenta</b><small>Home & Kitchen / 2 países</small></div><strong>5.6 d</strong></div><div class="exception"><i class="signal yellow"></i><div><b>Ticket abaixo do padrão</b><small>Brasil / Standard tier</small></div><strong>$41</strong></div><div class="exception"><i class="signal green"></i><div><b>Oportunidade</b><small>Premium tier recorrente</small></div><strong>+18%</strong></div></article></div>
+        <div class="layout-3" style="margin-top:16px"><article class="panel"><div class="panel-head"><div><h2>Categoria</h2><p class="muted">Receita · pedidos · retorno</p></div></div><div class="metric-row"><span>Home & Kitchen</span><b>$421K</b><div class="meter"><i style="width:86%"></i></div></div><div class="metric-row"><span>Food & Grocery</span><b>$318K</b><div class="meter"><i style="width:64%"></i></div></div><div class="metric-row"><span>Beauty</span><b>$274K</b><div class="meter"><i style="width:55%"></i></div></div></article><article class="panel"><div class="panel-head"><div><h2>Países</h2><p class="muted">Comparação por mercado</p></div></div><div class="metric-row"><span>Estados Unidos</span><b>$359K</b><div class="meter"><i style="width:82%"></i></div></div><div class="metric-row"><span>Brasil</span><b>$242K</b><div class="meter"><i style="width:55%"></i></div></div><div class="metric-row"><span>Reino Unido</span><b>$198K</b><div class="meter"><i style="width:45%"></i></div></div></article><article class="panel"><div class="panel-head"><div><h2>Próxima ação</h2><p class="muted">Recorte recomendado</p></div></div><p style="font-size:22px; line-height:1.1; letter-spacing:-.04em">Investigar devoluções de Home & Kitchen no Brasil.</p><button class="control" style="margin-top:8px">Abrir investigação</button></article></div>
+        <article class="panel" style="margin-top:16px"><div class="panel-head"><div><h2>Pedidos filtrados</h2><p class="muted">Tabela operacional · ordenação e busca</p></div><input class="control" placeholder="Buscar pedido ou produto"></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Entrega</th></tr></thead><tbody><tr><td>#10482</td><td>cus_00821</td><td>Air Fryer Digital</td><td>$129</td><td class="status good"><i></i> Entregue</td><td>2.4 d</td></tr><tr><td>#10481</td><td>cus_00416</td><td>Desk Organizer</td><td>$74</td><td class="status warn"><i></i> Em trânsito</td><td>5.6 d</td></tr><tr><td>#10480</td><td>cus_00192</td><td>Premium Coffee Beans</td><td>$58</td><td class="status good"><i></i> Entregue</td><td>2.1 d</td></tr></tbody></table></div></article>
+      </div>
+    </section>
+
+    <section id="atlas" class="mockup" role="tabpanel">
+      <div class="frame">
+        <header class="topline"><div><div class="eyebrow">Aurora / carta de correntes</div><h1>Onde o negócio<br>está fluindo?</h1><p class="muted">Uma carta de relações entre receita, produtos e risco.</p></div><div class="controls"><button class="control">Período: 2026</button><button class="control">Todos os países</button><button class="control">Todos os status</button></div></header>
+        <div class="layout-atlas"><aside class="side-note"><h2>Estado do território</h2><div><small class="muted">Receita</small><strong>$1.24M</strong></div><div><small class="muted">Pedidos</small><strong>25.0K</strong></div><div><small class="muted">Risco</small><strong style="color:#d4644d">8.4%</strong></div><p>Selecione uma relação para revelar os produtos, pedidos e próximo passo.</p></aside><section class="atlas-map"><div class="map-title"><b>Atlas de relações</b><span>Receita / pedidos / risco</span></div><div class="map-grid"><div class="map-cell head">Mercado</div><div class="map-cell head">Home</div><div class="map-cell head">Food</div><div class="map-cell head">Beauty</div><div class="map-cell head">Toys</div><div class="map-cell"><b>Estados Unidos</b></div><div class="map-cell hot"><b>$421K</b><span>34%</span></div><div class="map-cell warm"><b>$318K</b><span>25%</span></div><div class="map-cell"><b>$274K</b><span>22%</span></div><div class="map-cell"><b>$118K</b><span>9%</span></div><div class="map-cell"><b>Brasil</b></div><div class="map-cell risk"><b>$242K</b><span>8.4%</span></div><div class="map-cell hot"><b>$190K</b><span>15%</span></div><div class="map-cell warm"><b>$136K</b><span>11%</span></div><div class="map-cell"><b>$91K</b><span>7%</span></div><div class="map-cell"><b>Reino Unido</b></div><div class="map-cell warm"><b>$198K</b><span>16%</span></div><div class="map-cell"><b>$141K</b><span>11%</span></div><div class="map-cell hot"><b>$176K</b><span>14%</span></div><div class="map-cell"><b>$82K</b><span>6%</span></div></div><i class="route one"></i><i class="route two"></i></section><aside class="selection"><h2>Seleção atual</h2><dl><dt>Território</dt><dd>Brasil</dd><dt>Categoria</dt><dd>Home & Kitchen</dd><dt>Receita</dt><dd>$242K</dd><dt>Devolução</dt><dd style="color:#d4644d">11.2%</dd></dl><div class="next"><b>Próximo passo</b><br>Investigar Air Fryer Digital e Desk Organizer.</div></aside></div>
+        <article class="panel wide"><div class="panel-head"><div><h2>Rotas de receita</h2><p class="muted">A evolução mensal do recorte selecionado</p></div><span class="eyebrow">Brasil / Home</span></div><div class="bars"><div class="bar-col"><span>$18k</span><div class="bar" style="height:35%"></div><span>Jan</span></div><div class="bar-col"><span>$22k</span><div class="bar" style="height:48%"></div><span>Mar</span></div><div class="bar-col"><span>$29k</span><div class="bar" style="height:62%"></div><span>Mai</span></div><div class="bar-col"><span>$31k</span><div class="bar" style="height:75%"></div><span>Jul</span></div><div class="bar-col"><span>$42k</span><div class="bar" style="height:94%"></div><span>Set</span></div><div class="bar-col"><span>$38k</span><div class="bar" style="height:83%"></div><span>Nov</span></div></div></article>
+        <article class="panel wide"><div class="panel-head"><div><h2>Pedidos da rota</h2><p class="muted">Brasil · Home & Kitchen · 248 resultados</p></div><button class="control">Buscar pedido</button></div><div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Produto</th><th>Cliente</th><th>Total</th><th>Risco</th></tr></thead><tbody><tr><td>#10482</td><td>Air Fryer Digital</td><td>cus_00821</td><td>$129</td><td class="status warn"><i></i> atenção</td></tr><tr><td>#10481</td><td>Desk Organizer</td><td>cus_00416</td><td>$74</td><td class="status good"><i></i> baixo</td></tr><tr><td>#10480</td><td>Premium Coffee Beans</td><td>cus_00192</td><td>$58</td><td class="status good"><i></i> baixo</td></tr></tbody></table></div></article>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tabs = document.querySelectorAll('[data-target]');
+    const mockups = document.querySelectorAll('.mockup');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(item => { item.classList.remove('active'); item.setAttribute('aria-selected', 'false'); });
+      mockups.forEach(item => item.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.querySelector(`#${tab.dataset.target}`).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }));
+  </script>
+</body>
+</html>
